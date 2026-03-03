@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { getMetadata, getBatchMetadata, isValidUrl } from './src/services/metadata';
+import { x402MetaMiddleware, x402BatchMiddleware, getX402Manifest } from './src/middleware/x402';
 import type { MetadataResponse, BatchMetadataResponse, HealthResponse } from './src/types';
 
 const app = new Hono();
@@ -10,14 +11,19 @@ app.get('/health', (c) => {
   const response: HealthResponse = {
     status: 'healthy',
     timestamp: new Date().toISOString(),
-    version: '1.0.0',
+    version: '1.1.0-x402',
     uptime: Date.now() - startTime,
   };
   return c.json(response);
 });
 
-// GET /v1/meta?url= ($0.001)
-app.get('/v1/meta', async (c) => {
+// x402 Manifest endpoint for discovery
+app.get('/.well-known/x402-manifest', (c) => {
+  return c.json(getX402Manifest());
+});
+
+// GET /v1/meta?url= (0.01 USDC)
+app.get('/v1/meta', x402MetaMiddleware(), async (c) => {
   const url = c.req.query('url');
   
   if (!url) {
@@ -37,8 +43,8 @@ app.get('/v1/meta', async (c) => {
   return c.json(result);
 });
 
-// POST /v1/meta/batch ($0.006, max 10)
-app.post('/v1/meta/batch', async (c) => {
+// POST /v1/meta/batch (0.06 USDC, max 10)
+app.post('/v1/meta/batch', x402BatchMiddleware(), async (c) => {
   try {
     const body = await c.req.json();
     const urls = body.urls;
