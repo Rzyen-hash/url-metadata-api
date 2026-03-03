@@ -49,10 +49,23 @@ curl "https://url-metadata-api-production.up.railway.app/v1/meta?url=https://ogp
 
 ## ✅ Deliverable 3: xgate.run Listing
 
-**Status:** API ready for xgate.run discovery
+**Status:** ✅ **Service deployed and ready for xgate.run automated discovery**
 
-**Category:** Web Data / Metadata
-**Tags:** metadata, og-tags, scraper, web-data, x402
+**Service Information:**
+- **Name:** URL Metadata API
+- **Endpoint:** https://url-metadata-api-production.up.railway.app
+- **Type:** x402-enabled HTTP API
+- **Network:** Base
+- **Category:** Web Data / Metadata
+- **Tags:** metadata, og-tags, scraper, web-data, html-parsing, cheerio, x402
+
+**Pricing:**
+- Single URL: $0.001 USDC
+- Batch (max 10): $0.006 USDC
+
+**Health Check:** https://url-metadata-api-production.up.railway.app/health
+
+**Note:** XGate uses automated discovery. The service will be indexed when x402 payments are detected.
 
 ---
 
